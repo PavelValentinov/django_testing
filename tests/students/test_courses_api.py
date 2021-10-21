@@ -31,22 +31,22 @@ def test_get_list_curses(client, course_factory):
 @pytest.mark.django_db
 def test_get_course_filter_id(client, course_factory):
     course_factory(_quantity=5)
-    course_list = Course.objects.all()
-    url = reverse("courses-list")
+    course_first = Course.objects.first()
+    url = reverse("courses-list")+f'?id={course_first.id}'
     response = client.get(url)
     assert response.status_code == 200
-    assert response.data[3].get('id') == course_list[3].id
+    assert response.data[0].get('id') == course_first.id
 
 
 # проверка фильтрации списка курсов по name
 @pytest.mark.django_db
 def test_get_course_filter_name(client, course_factory):
     course_factory(_quantity=5)
-    course_list = Course.objects.all()
+    course_first = Course.objects.first()
     url = reverse("courses-list")
     response = client.get(url)
     assert response.status_code == 200
-    assert response.data[3].get('name') == course_list[3].name
+    assert response.data[0].get('name') == course_first.name
 
 # тест успешного создания курса
 @pytest.mark.django_db

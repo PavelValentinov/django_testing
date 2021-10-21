@@ -43,7 +43,7 @@ def test_get_course_filter_id(client, course_factory):
 def test_get_course_filter_name(client, course_factory):
     course_factory(_quantity=5)
     course_first = Course.objects.first()
-    url = reverse("courses-list")
+    url = reverse("courses-list")+f'?name={course_first.name}'
     response = client.get(url)
     assert response.status_code == 200
     assert response.data[0].get('name') == course_first.name
